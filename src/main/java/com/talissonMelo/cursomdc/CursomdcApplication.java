@@ -13,6 +13,7 @@ import com.talissonMelo.cursomdc.domain.Cidade;
 import com.talissonMelo.cursomdc.domain.Cliente;
 import com.talissonMelo.cursomdc.domain.Endereco;
 import com.talissonMelo.cursomdc.domain.Estado;
+import com.talissonMelo.cursomdc.domain.ItemPedido;
 import com.talissonMelo.cursomdc.domain.Pagamento;
 import com.talissonMelo.cursomdc.domain.PagamentoBoleto;
 import com.talissonMelo.cursomdc.domain.PagamentoCartao;
@@ -25,6 +26,7 @@ import com.talissonMelo.cursomdc.repositories.CidadeRepository;
 import com.talissonMelo.cursomdc.repositories.ClienteRepository;
 import com.talissonMelo.cursomdc.repositories.EnderecoRepository;
 import com.talissonMelo.cursomdc.repositories.EstadoRepository;
+import com.talissonMelo.cursomdc.repositories.ItemPedidoRepository;
 import com.talissonMelo.cursomdc.repositories.PagamentoRepository;
 import com.talissonMelo.cursomdc.repositories.PedidoRepository;
 import com.talissonMelo.cursomdc.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class CursomdcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomdcApplication.class, args);
@@ -120,6 +125,19 @@ public class CursomdcApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
+		
+		ItemPedido ite1 = new ItemPedido(ped1, p1, 0.0, 1, 2000.00);
+		ItemPedido ite2 = new ItemPedido(ped1, p3, 0.0, 2, 80.00);
+		ItemPedido ite3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ite1,ite2));
+		ped2.getItens().addAll(Arrays.asList(ite3));
+		
+		p1.getItens().addAll(Arrays.asList(ite1));
+		p2.getItens().addAll(Arrays.asList(ite3));;
+		p3.getItens().addAll(Arrays.asList(ite2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ite1,ite2,ite3));
 	}
 
 }
